@@ -1,0 +1,67 @@
+n=int(input())
+team_list2=[]
+team_list3=[]
+for i in range(n):
+    team=input().split(';')
+    team_list2.append(team)
+ 
+ 
+for i in range(len(team_list2)):
+    for j in range(2):
+        team_list3.append(team_list2[i][j])
+
+team_list3=set(team_list3)
+
+team_dict={i:0   for i in team_list3} 
+list1=[]
+team_mp=0;team_points=0;team_loss=0;team_draw=0;team_won=0
+for key,value in team_dict.items():
+    for i in range(len(team_list2)):
+        if key==team_list2[i][0] or key==team_list2[i][1]:
+            team_mp=team_mp+1
+            if team_list2[i][2]=='win' and team_list2[i][0]==key:
+                team_points=team_points+3
+                team_won=team_won+1
+                
+               # list1.append(team_points)
+            elif team_list2[i][2]=='draw' and team_list2[i][0]==key or team_list2[i][1]==key and team_list2[i][2]=='draw' :
+                team_points=team_points+1
+                team_draw=team_draw+1
+                
+            elif team_list2[i][2]=='loss' and team_list2[i][0]==key or team_list2[i][2]=='win' and team_list2[i][1]==key:
+                team_loss=team_loss+1
+                
+            elif team_list2[i][2]=='loss' and team_list2[i][1]==key:
+                team_points=team_points+3
+                team_won=team_won+1
+                
+            else:
+                team_loss=team_loss+1
+
+           
+    
+    list1.append(team_mp)
+    list1.append(team_won)
+    list1.append(team_draw)
+    list1.append(team_loss)
+    list1.append(team_points)
+    team_dict.update({key:list1})
+    #print(list1)
+    
+    list1=[]
+    team_mp=0;team_won=0;team_draw=0;team_loss=0;team_points=0
+team_dict=sorted(team_dict.items())
+team_dict=sorted(team_dict,key=lambda x:x[1][-1],reverse=True)
+print('{:<23}'.format('Team'),'|','{:>2}'.format('MP'),'|','{:>2}'.format('W'),'|','{:>2}'.format('D'),'|','{:>2}'.format('L'),'|','{:>2}'.format('P'),'|')
+for key,value in team_dict:
+    print('{:<23}'.format(key),'|','{:>2}'.format(value[0]),'|','{:>2}'.format(value[1]),'|','{:>2}'.format(value[2]),'|','{:>2}'.format(value[3]),'|','{:>2}'.format(value[4]),'|')
+    
+   *******------------------------------***********************
+   Output:
+Team                    | MP |  W |  D |  L |  P |
+CSK                     |  2 |  1 |  1 |  0 |  4 |
+MI                      |  2 |  1 |  1 |  0 |  4 |
+RR                      |  3 |  1 |  1 |  1 |  4 |
+DD                      |  3 |  0 |  3 |  0 |  3 |
+KKR                     |  1 |  0 |  0 |  1 |  0 |
+SH                      |  1 |  0 |  0 |  1 |  0 |
