@@ -112,6 +112,67 @@ list3.sort(key=itemgetter('Total Points'),reverse=True)
 json_object=[i for i in list3]
 json_object=json.dumps(json_object,indent=4)
 print(json_object)
+****----------------------------------------------*************
+output:
+      Output:
+[
+    {
+        "Team": "Chennai Super Kings",
+        "Matches Played": 2,
+        "Total Points": 4,
+        "Won": 1,
+        "Tied": 1,
+        "Lost": 0
+    },
+    {
+        "Team": "Mumbai Indians",
+        "Matches Played": 2,
+        "Total Points": 4,
+        "Won": 1,
+        "Tied": 1,
+        "Lost": 0
+    },
+    {
+        "Team": "Delhi Capitals",
+        "Matches Played": 3,
+        "Total Points": 3,
+        "Won": 0,
+        "Tied": 3,
+        "Lost": 0
+    },
+    {
+        "Team": "Rajasthan Royals",
+        "Matches Played": 2,
+        "Total Points": 3,
+        "Won": 1,
+        "Tied": 0,
+        "Lost": 1
+    },
+    {
+        "Team": "Rajasthan Royal",
+        "Matches Played": 1,
+        "Total Points": 1,
+        "Won": 0,
+        "Tied": 1,
+        "Lost": 0
+    },
+    {
+        "Team": "Kolkata Knight Riders",
+        "Matches Played": 1,
+        "Total Points": 0,
+        "Won": 0,
+        "Tied": 0,
+        "Lost": 1
+    },
+    {
+        "Team": "Sunrisers Hyderabad",
+        "Matches Played": 1,
+        "Total Points": 0,
+        "Won": 0,
+        "Tied": 0,
+        "Lost": 1
+    }
+]
 
 
 
