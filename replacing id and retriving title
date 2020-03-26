@@ -1,0 +1,7 @@
+import json
+import requests
+given_input=int(input())
+r=requests.get(f'https://hacker-news.firebaseio.com/v0/item/{given_input}.json')
+p=r.text
+dict_obj=json.loads(p)
+print(dict_obj['title'])
