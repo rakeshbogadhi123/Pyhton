@@ -1,0 +1,117 @@
+sample_output = """[
+    {
+        "Team": "Chennai Super Kings",
+        "Matches Played": 2,
+        "Total Points": 4,
+        "Won": 1,
+        "Tied": 1,
+        "Lost": 0
+    },
+    {
+        "Team": "Mumbai Indians",
+        "Matches Played": 2,
+        "Total Points": 4,
+        "Won": 1,
+        "Tied": 1,
+        "Lost": 0
+    },
+    {
+        "Team": "Delhi Capitals",
+        "Matches Played": 3,
+        "Total Points": 3,
+        "Won": 0,
+        "Tied": 3,
+        "Lost": 0
+    },
+    {
+        "Team": "Rajasthan Royals",
+        "Matches Played": 2,
+        "Total Points": 3,
+        "Won": 1,
+        "Tied": 0,
+        "Lost": 1
+    },
+    {
+        "Team": "Rajasthan Royal",
+        "Matches Played": 1,
+        "Total Points": 1,
+        "Won": 0,
+        "Tied": 1,
+        "Lost": 0
+    },
+    {
+        "Team": "Kolkata Knight Riders",
+        "Matches Played": 1,
+        "Total Points": 0,
+        "Won": 0,
+        "Tied": 0,
+        "Lost": 1
+    },
+    {
+        "Team": "Sunrisers Hyderabad",
+        "Matches Played": 1,
+        "Total Points": 0,
+        "Won": 0,
+        "Tied": 0,
+        "Lost": 1
+    }
+]
+"""
+import json
+from operator import itemgetter
+test_cases=int(input())
+set1=set()
+list1=[]
+list2=[]
+#print(set1)
+dict1={'Team':0,'Matches Played':0,'Total Points':0,'Won':0,'Tied':0,'Lost':0}
+for i in range(test_cases):
+    team_name=input().split(';')
+    #print(team_name)
+    list1.append(team_name)
+    list2.extend(team_name[:-1])
+
+set1=set(list2)
+
+list3=[]
+team_won=0
+played=0
+tied=0
+lost=0
+points=0
+for i in set1:
+    for j in list1:
+        if j[0]==i or j[1]==i:
+            played=played+1
+            dict1.update({'Team': i})
+            dict1.update({'Matches Played':played})
+            if j[2]=='win' and j[0]==i or (j[2]=='loss' and j[1]==i):
+                team_won=team_won+1
+                points=points+3
+                dict1.update({'Total Points':points})
+                dict1.update({'Won':team_won})
+            elif j[2]=='loss' and j[0]==i or j[1]==i and j[2]=='win':
+                lost=lost+1
+                dict1.update({'Lost':lost})
+            elif j[2]=='draw':
+                tied=tied+1
+                points=points+1
+                dict1.update({'Total Points':points})
+                dict1.update({'Tied':tied})
+                
+    list3.append(dict1)
+   
+    dict1={'Team':0,'Matches Played':0,'Total Points':0,'Won':0,'Tied':0,'Lost':0}
+    team_won=0
+    played=0
+    tied=0
+    lost=0
+    points=0
+list3.sort(key=itemgetter('Team'))
+list3.sort(key=itemgetter('Total Points'),reverse=True)
+json_object=[i for i in list3]
+json_object=json.dumps(json_object,indent=4)
+print(json_object)
+
+
+
