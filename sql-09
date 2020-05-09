@@ -1,0 +1,59 @@
+Q1='''
+select avg(age) from player;
+'''
+
+Q2='''select match_no,play_date from match where audience>50000 order by match_no asc;'''
+Q3='''
+select team_id,count(win_lose) as win_matches from matchteamdetails 
+where win_lose='W'
+group by team_id 
+order by win_matches desc,team_id asc;
+'''
+Q4='''
+select match_no,play_date from match 
+where stop1_sec > (select avg(stop1_sec) from match)
+order by match_no desc;
+'''
+Q5='''
+select mc.match_no,t.name,p.name from matchcaptain mc
+inner join team t inner join player p
+on mc.captain=p.player_id
+where t.team_id==mc.team_id 
+order by mc.match_no,t.name;
+'''
+Q6='''
+select m.match_no,p.name,p.jersey_no from match m
+inner join player p on
+p.player_id=m.player_of_match where p.player_id=m.player_of_match
+order by m.match_no asc;
+'''
+Q7='''
+select t.name,avg(p.age) from team t
+inner join player p on
+t.team_id==p.team_id
+group by p.team_id having avg(p.age)>26
+order by t.name asc;
+'''
+Q8='''
+select p.name,p.jersey_no,p.age,count(gd.player_id) as no_goals from player p
+inner join goaldetails gd on
+p.player_id==gd.player_id
+where p.age<=27
+group by gd.player_id
+order by no_goals desc,p.name asc;
+'''
+Q9='''select team_id,count(goal_id)*100.0/(select count(goal_id) from goaldetails) from goaldetails group by team_id;'''
+
+Q10='''select AVG(goals) from (select count(goal_id) goals from goaldetails group by team_id);'''
+
+Q11='''select player_id,name,date_of_birth from player as p  
+where NOT EXISTS (select`goaldetails`. `player_id` from goaldetails join player on player.player_id=goaldetails.player_id 
+where `goaldetails`.`player_id`=`P`.`player_id`) 
+order by player_id ASC;'''
+
+Q12='''select t. name,m.match_no,audience,audience-(select AVG(audience) 
+from  match m inner join matchteamdetails mtd on m.match_no=mtd.match_no 
+where t.team_id=mtd.team_id group by mtd.team_id)as difference 
+from team  t inner join matchteamdetails mt on t.team_id=mt.team_id 
+INNER JOIN match m  on mt.match_no=m.match_no  
+ORDER BY m.match_no ASC;'''
