@@ -1,0 +1,7 @@
+Q1="select a.id,a.fname,a.lname,a.gender from actor a inner join cast c on a.id=c.pid inner join movie m on c.mid=m.id where m.name LIKE 'Annie%';"
+Q2="select `m`.`id`,m.name,m.rank,m.year from movie m inner join moviedirector md on `m`.`id`=`md`.`mid` inner join director  d on `md`.`did`=`d`.`id` where  `m`.`year` in (1999,1994,2003) AND d.fname='Biff' and d.lname='Malibu'  order by `m`.`rank`  DESC,m.year ASC;"
+Q3="select year,count(id) as no_of_movies from movie group by year having avg(rank)>(select avg(rank) from movie);"
+Q4="SELECT *from movie  where year=2001 and  rank<(select avg(rank) from movie where year=2001) order by rank desc LIMIT 10;"
+#Q5="select m.id,(select count(a.id) from movie  inner join cast c on movie.id=c.mid inner join actor a on c.pid=a.id wh\ere a.gender='F' and m.id=movie.id),(select count(a.id) from movie inner join cast c on movie.id=c.mid inner join actor a on c.pid=a.id where a.gender='M' and m.id=movie.id)  from movie m limit 100;"
+Q6="select distinct(a.id) from actor a inner join cast c on a.id=c.pid inner join movie m on m.id=c.mid group by a.id,m.id  having count(distinct role)>1 order by a.id asc limit 100;"
+Q7="select fname,count(id) from director group by fname having count(id)>1;"
