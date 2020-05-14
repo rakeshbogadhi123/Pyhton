@@ -5,3 +5,10 @@ Q4="SELECT *from movie  where year=2001 and  rank<(select avg(rank) from movie w
 #Q5="select m.id,(select count(a.id) from movie  inner join cast c on movie.id=c.mid inner join actor a on c.pid=a.id wh\ere a.gender='F' and m.id=movie.id),(select count(a.id) from movie inner join cast c on movie.id=c.mid inner join actor a on c.pid=a.id where a.gender='M' and m.id=movie.id)  from movie m limit 100;"
 Q6="select distinct(a.id) from actor a inner join cast c on a.id=c.pid inner join movie m on m.id=c.mid group by a.id,m.id  having count(distinct role)>1 order by a.id asc limit 100;"
 Q7="select fname,count(id) from director group by fname having count(id)>1;"
+
+Q8='''select d.id,d.fname,d.lname from director d WHERE EXISTS 
+(SELECT *FROM moviedirector md inner join cast c on md.mid=c.mid  
+WHERE md.did=d.id group by did,`md`.`mid` HAVING COUNT(DISTINCT pid)>=100) 
+AND NOT EXISTS (SELECT *FROM moviedirector md inner join cast c on md.mid=c.mid 
+where md.did=d.id group by did,`md`.`mid` HAVING COUNT(DISTINCT pid)<100);'''
+
