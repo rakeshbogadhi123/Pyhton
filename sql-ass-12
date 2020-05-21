@@ -1,0 +1,82 @@
+class DoesNotExist(Exception):
+    pass
+
+class MultipleObjectsReturned(Exception):
+    pass
+
+class InvalidField(Exception):
+    pass
+
+def write_data(sql_query):
+	    import sqlite3
+	    connection = sqlite3.connect('students.sqlite3')
+	    crsr = connection.cursor() 
+	    crsr.execute("PRAGMA foreign_keys=on;") 
+	    crsr.execute(sql_query) 
+	    connection.commit() 
+	    connection.close()
+
+def read_data(sql_query):
+    import sqlite3
+    connection = sqlite3.connect('students.sqlite3')
+    crsr = connection.cursor() 
+    crsr.execute(sql_query)
+    ans= crsr.fetchall()
+    connection.close()
+    return ans
+	
+
+class Student:
+    def __init__(self,name,age,score):
+        self.name=name
+        self.age=age
+        self.score=score
+        self.student_id=None
+        
+           
+    def save(self):
+        import sqlite3
+        connection = sqlite3.connect('students.sqlite3')
+        crsr = connection.cursor()
+        if self.student_id==None:
+            crsr.execute('insert into Student values (:student_id, :name, :age, :score)', {'student_id': self.student_id, 'name': self.name, 'age': self.age, 'score': self.score}) 
+            #crsr.execute('insert into Student (student_id,name,age,score) values ({} {}, {}, {})'.format(self.student_id,self.name,self.age,self.score)) 
+            self.student_id=crsr.lastrowid
+        else:
+            
+            crsr.execute(f'update student set name=\'{self.name}\',age={self.age},score={self.score} where student_id={self.student_id}')
+        connection.commit()
+        #crsr.close()
+        #connection.close()
+        
+        
+    def delete(self):
+        import sqlite3
+        connection=sqlite3.connect("students.sqlite3")
+        c=connection.cursor()
+        c.execute("Delete from Student where student_id={}".format(self.student_id))
+        connection.commit()
+        connection.close()
+        
+    @classmethod
+    def get(cls,**kwargs):
+        for k,v in kwargs.items():
+            x=k
+            y=v
+        if x not in ('student_id','name','age','score'):
+            raise InvalidField
+            
+        if x=='name':
+            sqlquery=read_data(f'select *from Student where {x}=\'{y}\'')
+        else:
+            sqlquery=read_data(f'select *from Student where {x}={y}')
+        
+        if len(sqlquery)==0:
+            raise DoesNotExist
+        if len(sqlquery)>1:
+            raise MultipleObjectsReturned
+        
+        b=Student(sqlquery[0][1],sqlquery[0][2],sqlquery[0][3])
+        b.student_id=sqlquery[0][0]
+        return b
+    
